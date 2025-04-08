@@ -28,7 +28,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         #send the post to the channel
         await bot.send_message(chat_id=CHANNEL_ID, text=formatted_message, parse_mode='HTML')
 
-app = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
+app = ApplicationBuilder().token(os.environ.get("TELEGRAM_TOKEN")).build()
 
 app.add_handler(CommandHandler('start', start))
 app.add_handler(MessageHandler(filters.TEXT, handle_message))
