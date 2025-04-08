@@ -4,6 +4,9 @@ from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, Messa
 from constants import *
 from create_messages import *
 from amazon_api import AmazonAPI
+import threading
+import http.server
+import socketserver
 
 bot = Bot(token=TELEGRAM_TOKEN)
 
@@ -33,5 +36,25 @@ app = ApplicationBuilder().token(os.environ.get("TELEGRAM_TOKEN")).build()
 
 app.add_handler(CommandHandler('start', start))
 app.add_handler(MessageHandler(filters.TEXT, handle_message))
+
+import os
+  # adjust as per your code
+
+# Start a dummy HTTP server to satisfy Koyeb's health check
+def fake_web_server():
+    PORT = int(os.environ.get("PORT", 8080))
+    Handler = http.server.SimpleHTTPRequestHandler
+    with socketserver.TCPServer(("", PORT), Handler) as httpd:
+        httpd.serve_forever()
+
+threading.Thread(target=fake_web_server).start()
+
+# Set up your bot
+app = ApplicationBuilder().token(os.environ.get("TELEGRAM_TOKEN")).build()
+
+# Your command handlers, etc...
+# app.add_handler(...)
+
+# Run the bot in polling mode
 
 app.run_polling()
