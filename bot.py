@@ -37,9 +37,6 @@ app = ApplicationBuilder().token(os.environ.get("TELEGRAM_TOKEN")).build()
 app.add_handler(CommandHandler('start', start))
 app.add_handler(MessageHandler(filters.TEXT, handle_message))
 
-import os
-  # adjust as per your code
-
 # Start a dummy HTTP server to satisfy Koyeb's health check
 def fake_web_server():
     PORT = int(os.environ.get("PORT", 8080))
